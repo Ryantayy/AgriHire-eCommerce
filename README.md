@@ -38,7 +38,7 @@ AgriHire Solutions integrates several innovative features, such as:
 
 ## Setup and Installation
 
-1. **Clone the Repository**:
+1. **Clone the Repository**: https://github.com/Ryantayy/AgriHire-eCommerce.git
 
 ### How to run applicatiom:
 * pip install -r requirements.txt
