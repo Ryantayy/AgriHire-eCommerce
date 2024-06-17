@@ -1,0 +1,106 @@
+{% extends 'staff_dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="container">
+   <div class="row mb-8">
+       <div class="col-md-12">
+           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+               <div>
+                   <h2>Booking History</h2>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="card h-100 card-lg">
+         <div class="row">
+            <div class="card h-100 card-lg">
+               <div class="p-6">
+                  <div class="row justify-content-between">
+                        <div class="col-md-4 col-12">
+                           <form class="d-flex" role="search" method="GET" action="{{ url_for('staff.search_order') }}">
+                              <input class="form-control" type="search" placeholder="Search Orders" aria-label="Search" name="search_query"/>
+                           </form>
+                        </div>
+                  </div>
+               </div>
+
+               <div class="card-body p-0">
+                  <div class="table-responsive">
+                     {% if orders %}
+                        <table class="table table-centered table-borderless text-nowrap table-hover">
+                           <thead class="bg-light">
+                              <tr>
+                                 <th>Order ID</th>
+                                 <th>Customer</th>
+                                 <th>Amount</th>
+                                 <th>Order Date</th>
+                                 <th>Status</th>
+                                 <th>Actions</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                           {% for order in orders %}
+                              <tr>
+                                 <td>
+                                    <a href="{{ url_for('staff.view_order_details', order_id=order['order_id']) }}">
+                                       {{ order["order_id"] }}
+                                    </a>
+                                 </td>
+                                 <td>
+                                    <a href="{{ url_for('staff.view_customer_profile', user_id=order['user_id']) }}">
+                                       {{ order["customer_name"] }}
+                                    </a>
+                                 </td>
+                                 <td>{{ order["amount"] }}</td>
+                                 <td>{{ order["order_date"] }}</td>
+                                 <td> 
+                                    <span class="badge {% if order["status"] == 'confirmed' %}bg-success{% elif order["status"] == 'cancelled' %}bg-danger{% endif %}">
+                                       {{ order["status"] }}
+                                    </span>
+                                 </td>
+                                 <td>
+                                    {% if order["status"] != 'cancelled' %}
+                                       <div class="dropdown">
+                                          <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                             <i class="feather-icon icon-more-vertical fs-5"></i>
+                                          </a>
+                                          <ul class="dropdown-menu">
+                                             <li>
+                                                <a class="dropdown-item" onclick="confirmDelete({{ order['order_id'] }});">
+                                                   <i class="bi bi-trash me-3"></i>
+                                                   Delete
+                                                </a>
+                                             </li>
+                                          </ul>
+                                       </div>
+                                    {% endif %}
+                                 </td>
+                              </tr>
+                           {% endfor %}
+                           </tbody>
+                        </table>
+                     {% else %}
+                        <div class="ps-6">
+                           <p>There are no orders found.</p>
+                        </div>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+   function confirmDelete(order_id) {
+      const confirmed = confirm("Are you sure you want to cancel this order?")
+       if (confirmed) {
+           window.location.href = "{{ url_for('staff.cancel_order', order_id=0) }}" .replace('0', order_id);
+       }
+   }
+</script>
+
+{% endblock %}

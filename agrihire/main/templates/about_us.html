@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}About AgriHire Solutions{% endblock %}
+
+{% block content %}
+
+<main>
+    <section class="mt-lg-14 mt-8">
+        <div class="container">
+           <div class="row">
+              <div class="offset-lg-1 col-lg-10 col-12">
+                 <div class="row align-items-center mb-14">
+                    <div class="col-md-6">
+                       <div class="ms-xxl-14 me-xxl-15 mb-8 mb-md-0 text-center text-md-start">
+                          <h1 class="mb-6">Empowering the Agricultural Community:</h1>
+                          <p class="mb-0 lead">With our advanced equipment and innovative rental solutions, we help you grow more efficiently.</p>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                       <div class="me-6">
+                          <img src="static/assets/images/about/about-img.png" alt="AgriHire Solutions" class="img-fluid rounded" />
+                       </div>
+                    </div>
+                 </div>
+                 <div class="row mb-12">
+                    <div class="col-12">
+                       <div class="mb-8">
+                          <h2>What We Offer</h2>
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                       <div class="card bg-light mb-6 border-0">
+                          <div class="card-body p-8">
+                                <img src="static/assets/images/about/about-icons-1.png" alt="" width="200" height="auto"/>
+                             <h4>Top-of-the-Line Equipment</h4>
+                             <p>We provide a diverse range of agricultural machinery to cater to all your farming needs.</p>
+                             <a href="#" class="btn btn-dark mt-2">Browse Our Brands</a>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                       <div class="card bg-light mb-6 border-0">
+                          <div class="card-body p-8">
+                                <img src="static/assets/images/about/about-icons-2.png" alt="" width="200" height="auto"/>
+                             <h4>Innovative Rental Solutions</h4>
+                             <p>Explore flexible rental options designed to reduce costs and increase productivity on your farm.</p>
+                             <a href="{{ url_for('auth.register') }}" class="btn btn-dark mt-2">Hire Online Now</a>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                       <div class="card bg-light mb-6 border-0">
+                          <div class="card-body p-8">
+                                <img src="static/assets/images/about/about-icons-3.png" alt="" width="200" height="auto"/>
+                             <h4>Dedicated Support from Our Staff</h4>
+                             <p>Our team is ready to support you with expert advice and maintenance services from all across Aotearoa.</p>
+                             <a href="{{ url_for('main.stores') }}" class="btn btn-dark mt-2">Visit Our Stores</a>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="col">
+                       <p>
+                          For detailed inquiries, please visit our
+                          <a href="#">Contact Page</a>
+                       </p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </section>
+ </main>
+
+{% endblock %}

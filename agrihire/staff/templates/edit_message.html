@@ -1,0 +1,59 @@
+{% extends 'staff_dashboard.html' %}
+
+{% block dashboard_content %}
+
+ <div class="col-lg-12 col-md-8 col-12">
+    <div class="offset-lg-2 col-lg-8 col-12">
+        <div class="mb-8">
+           <h1 class="h3"> Reply Inquiries </h1>
+        </div>
+        <div class="col-lg-5">
+          
+            <form method="POST" action="{{ url_for('staff.edit_message', message_id=message_id) }}" enctype="multipart/form-data">
+               {{ form.csrf_token }}
+             
+                <div class="mb-3">
+                    <label class="form-label">{{ form.customer.label }}</label>
+                    {{ form.customer(class="form-control", disabled="disabled") }}
+                </div>
+             
+               <div class="mb-3">
+                    <label class="form-label">{{ form.firstname.label }}</label>
+                    {{ form.firstname(class="form-control", disabled="disabled") }}
+                </div>
+           
+                <div class="mb-3">
+                    <label class="form-label">{{ form.lastname.label }}</label>
+                    {{ form.lastname(class="form-control", disabled="disabled")}}
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    {{ form.email(class="form-control", disabled="disabled")}}
+                </div>
+             
+               <div class="mb-5">
+                  <label class="form-label">{{ form.subject.label }}</label>
+                  {{ form.subject(class="form-control", disabled="disabled") }}
+               </div>
+              
+               <div class="mb-5">
+                  <label class="form-label">{{ form.message_text.label }}</label>
+                  {{ form.message_text(class="form-control",disabled="disabled") }}
+               </div>
+
+               <div class="mb-5">
+                    <label class="form-label">{{ form.reply_text.label }}</label>
+                    {{ form.reply_text(class="form-control") }}
+               </div>
+              
+               <div class="mb-3">
+                  <button class="btn btn-primary">Submit</button>
+               </div>
+            </form>
+         </div>
+     </div>
+
+ </div>
+
+ {% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'dashboard_layout.html' %}
+
+{% block dashboard_content %}
+<!-- Side Nav -->
+<div class="col-lg-3 col-md-4 col-12 border-end d-none d-md-block">
+   <div class="pt-10 pe-lg-10">
+      
+      <ul class="nav flex-column nav-pills nav-pills-dark">
+         <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('customer.account_orders') }}">
+               <i class="feather-icon icon-shopping-bag me-2"></i>
+               Your Orders
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_settings') }}">
+               <i class="feather-icon icon-settings me-2"></i>
+               Settings
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_payment_method') }}">
+               <i class="feather-icon icon-credit-card me-2"></i>
+               Payment Method
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.enquiry') }}">
+               <i class="feather-icon icon-help-circle me-2"></i>
+               Enquiry
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.notification') }}">
+               <i class="feather-icon icon-bell me-2"></i>
+               Notification
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <hr />
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{url_for('auth.logout')}}">
+               <i class="feather-icon icon-log-out me-2"></i>
+               Log out
+            </a>
+         </li>
+      </ul>
+   </div>
+</div>
+
+<!-- Main Content -->
+<div class="col-lg-9 col-md-8 col-12">
+   <div class="py-6 p-md-6 p-lg-10">
+      <!-- heading -->
+      <h2 class="mb-6">Your Orders</h2>
+
+      <div class="table-responsive-xxl border-0">
+         {% if orders %}
+            <!-- Table -->
+            <table class="table mb-0 text-nowrap table-centered">
+               <!-- Table Head -->
+               <thead class="bg-light">
+                  <tr>
+                     <th>#</th>
+                     <th>Order Datetime</th>
+                     <th>Shipping Address</th>
+                     <th>Special Instruction</th>
+                     <th>Status</th>
+                     <th>Amount</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- Table body -->
+                  {% for order in orders %}
+                  <tr>
+                     <td class="align-middle border-top-0 w-0">
+                        {{ order.order_id }}
+                     </td>
+                     <td class="align-middle border-top-0">
+                        {{ order.order_date }}
+                     </td>
+                     <td class="align-middle border-top-0">
+                        {{ order.shipping_address }}
+                     </td>
+                     <td class="align-middle border-top-0">
+                        {{ order.special_instruction }}
+                     </td>        
+                     <td class="align-middle border-top-0">
+                        {% if order.status == 'confirmed' %}
+                        <span class="badge bg-success">{{ order.status|title }}</span>
+                        {% elif order.status == 'cancelled' %}
+                        <span class="badge bg-danger">{{ order.status|title }}</span>
+                        {% endif %}
+                     </td>
+                     <td class="align-middle border-top-0"> {{ order.amount }} </td>
+                     <td>
+                        <div class="dropdown">
+                           <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="feather-icon icon-more-vertical fs-5"></i>
+                           </a>
+                           <ul class="dropdown-menu">
+                              <li>
+                                 <a class="dropdown-item" href="{{ url_for('customer.view_order_details', order_id=order.order_id) }}">
+                                    <i class="bi bi-card-list me-3"></i>
+                                    View
+                                 </a>
+                              </li>
+                              <li>
+                                 <form action="{{ url_for('customer.order_cancellation', order_id=order.order_id) }}" method="POST">
+                                    <button type="submit" class="dropdown-item">
+                                       <i class="bi bi-x-circle me-3"></i>
+                                       Cancel
+                                    </button>
+                                 </form>
+                              </li>
+                           </ul>
+                        </div>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         {% else %}
+         <div class="alert alert-success" role="alert">
+            You don't have any orders yet. <a href="{{ url_for('main.home') }}" class="alert-link">Start shopping now!</a>
+         </div>
+         {% endif %}
+      </div>
+   </div>
+</div>
+      
+{% endblock %}

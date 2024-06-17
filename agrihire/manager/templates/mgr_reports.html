@@ -1,0 +1,38 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="container">
+    <h1 class="text-center mb-5">Financial Summary</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="green-row"> <!-- Add custom green-row class -->
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> 
+                <td>Total Income</td>
+                <td>${{total_income}}</td>
+            </tr>
+            <tr class="green-row"> <!-- Add custom green-row class -->
+                <td>Total Expenses</td>
+                <td>${{total_expense}}</td>
+            </tr>
+            <tr> 
+                <td>Total Profit</td>
+                <td>${{profit}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .green-row {
+        background-color: #d4edda; /* Green */
+    }
+</style>
+
+{% endblock %}

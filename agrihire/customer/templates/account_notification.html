@@ -1,0 +1,95 @@
+{% extends 'dashboard_layout.html' %}
+
+{% block dashboard_content %}
+<!-- Side Nav -->
+<div class="col-lg-3 col-md-4 col-12 border-end d-none d-md-block">
+   <div class="pt-10 pe-lg-10">
+      
+      <ul class="nav flex-column nav-pills nav-pills-dark">
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_orders') }}">
+               <i class="feather-icon icon-shopping-bag me-2"></i>
+               Your Orders
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_settings') }}">
+               <i class="feather-icon icon-settings me-2"></i>
+               Settings
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_payment_method') }}">
+               <i class="feather-icon icon-credit-card me-2"></i>
+               Payment Method
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.enquiry') }}">
+               <i class="feather-icon icon-help-circle me-2"></i>
+               Enquiry
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('customer.notification') }}">
+               <i class="feather-icon icon-bell me-2"></i>
+               Notification
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <hr />
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{url_for('auth.logout')}}">
+               <i class="feather-icon icon-log-out me-2"></i>
+               Log out
+            </a>
+         </li>
+
+      </ul>
+   </div>
+</div>
+
+<!-- Main Content -->
+<div class="col-lg-9 col-md-8 col-12">
+   <div class="py-6 p-md-6 p-lg-10">
+      <!-- heading -->
+      <h2 class="mb-6">Notifications</h2>
+
+      <div>
+         <!-- List group -->
+         <ul class="list-group list-group-flush notification-list-scroll fs-6">
+            {% for notification in notifications %}
+            <!-- List group item -->
+            <li class="list-group-item px-5 py-4 list-group-item-action">
+               <a href="#!" class="text-muted">
+                  <div class="d-flex">
+                     <img src="/static/assets/images/avatar/avatar-default.png" alt="" class="avatar avatar-md rounded-circle" />
+                     <div class="ms-4">
+                        <p class="mb-1">
+                           <span class="text-dark">{{ notification.message }}</span>
+                        </p>
+                        <span>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
+                              <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                           </svg>
+                           <small class="ms-2"> {{ notification.time_ago }}</small>
+                        </span>
+                     </div>
+                  </div>
+               </a>
+            </li>
+            {% endfor %}
+         </ul>
+      </div>
+   </div>
+</div>
+      
+{% endblock %}

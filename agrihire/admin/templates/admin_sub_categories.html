@@ -1,0 +1,100 @@
+{% extends 'admin_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="container">
+   <div class="row mb-8">
+       <div class="col-md-12">
+           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+               <div>
+                   <h2>Sub Category Details</h2>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="card h-100 card-lg">
+         <div class="row">
+            <div class="card h-100 card-lg">
+               <div class="p-6">
+                  <div class="row justify-content-between">
+                        <div class="col-md-4 col-12">
+                           <form class="d-flex" role="search" method = "GET" action = "{{ url_for('admin.search') }}">
+                              <input class="form-control" type="search" placeholder="Search subcategory" aria-label="Search" name="search_query"/>
+                           </form>
+                        </div>
+                  </div>
+               </div>
+   
+               <div class="card-body p-0">
+                  <div class="table-responsive">
+                     {% if sub_categories %}
+                        <table class="table table-centered table-borderless text-nowrap table-hover">
+                           <thead class="bg-light">
+                           <tr>
+                              <th scope="col">Category Name</th>
+                              <th scope="col">Sub Category Name</th>
+                              <th scope="col">Hire Cost</th>
+                              <th scope="col">Shipping Pricce</th>
+                              <th scope="col">Min Hire Period / Days</th>
+                              <th scope="col">Max Hire Period / Days</th>
+                              <th></th>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           {% for sc in sub_categories%}
+                              <tr>
+                              <td>
+                                 {{sc["category_name"] | title}}
+                              </td>
+                              <td>
+                                 <a href = "{{ url_for('admin.edit_subcategory', sub_category_id = sc['sub_category_id'])}}">
+                                 {{sc["sub_category_name"]}}
+                                 </a>
+                              </td>
+   
+                              <td>${{sc["hire_cost"]}}</td>
+                              <td>${{sc["shipping_price"]}}</td>
+                              <td>{{sc["min_hire_period"]}}</td>
+                              <td>{{sc["max_hire_period"]}}</td>
+                              <td>
+                                 <div class="dropdown">
+                                    <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                       <i class="feather-icon icon-more-vertical fs-5"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                      {# <li>
+                                          <a class="dropdown-item" href="#">
+                                             <i class="bi bi-trash me-3"></i>
+                                             Delete
+                                          </a>
+                                       </li> #}
+                                       <li>
+                                          <a class="dropdown-item" href="{{ url_for('admin.edit_subcategory', sub_category_id = sc['sub_category_id'])}}">
+                                             <i class="bi bi-pencil-square me-3"></i>
+                                             Edit
+                                          </a>
+                                       </li>
+                                    </ul>
+                                 </div>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                           </tbody>
+                     </table>
+                     {% else %}
+                        <div class="ps-6">
+                           <p>There are no sub categories found.</p>
+                        </div>
+                     {% endif %}
+                  </div>
+               </div>
+               
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+    <div class="card h-100 card-lg">
+       <div class="p-6">
+          <h3 class="mb-0 fs-5"> Add New Staff </h3>
+       </div>
+       <div class="card-body p-0">
+         <div class="col-lg-9 col-md-8 col-12">
+             <div class="py-6 p-md-6 p-lg-10">
+                <div>
+                   <div class="row">
+                      <div class="col-lg-5">
+                         
+                         <form method="POST" action="{{ url_for('manager.add_new_staff') }}" enctype="multipart/form-data">
+                            {{ form.csrf_token }}
+                            
+                            <div class="mb-3">
+                               <label class="form-label">{{ form.email.label }}</label>
+                               {{ form.email(class="form-control") }}
+                            </div>
+                            
+                            <div class="mb-3">
+                               <label class="form-label">{{ form.title.label }}</label>
+                               {{ form.title(class="form-control") }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">{{ form.store.label }}</label>
+                                {{ form.store(class="form-control") }}
+                            </div>
+                            
+                            <div class="mb-3">
+                               <label class="form-label">{{ form.firstname.label }}</label>
+                               {{ form.firstname(class="form-control", pattern="[A-Za-z]+", title="Only letters are allowed.") }}
+                            </div>
+                           
+                            <div class="mb-3">
+                               <label class="form-label">{{ form.lastname.label }}</label>
+                               {{ form.lastname(class="form-control", pattern="[A-Za-z]+", title="Only letters are allowed.") }}
+                            </div>
+                           
+                            <div class="mb-5">
+                               <label class="form-label">{{ form.phone.label }}</label>
+                               {{ form.phone(class="form-control") }}
+                            </div>
+                            
+                            <div class="mb-5">
+                               <label class="form-label">{{ form.address.label }}</label>
+                               {{ form.address(class="form-control") }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">{{ form.password.label }}</label>
+                                {{ form.password(class="form-control") }}
+                             </div>
+
+                             <div class="form-group mb-3">
+                                {{ form.password_confirm.label }}
+                                {{ form.password_confirm(class="form-control") }}
+                            </div>
+                           
+                            <div class="mb-3">
+                               <button class="btn btn-primary">Save Details</button>
+                            </div>
+                         </form>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+    </div>
+ </div>
+
+{% endblock %}

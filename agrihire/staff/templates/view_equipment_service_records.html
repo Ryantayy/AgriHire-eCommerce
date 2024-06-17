@@ -1,0 +1,74 @@
+{% extends 'staff_dashboard.html' %}
+
+{% block dashboard_content %}
+
+<div class="container">
+   <div class="row mb-8">
+       <div class="col-md-12">
+           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+               <div>
+                   <h2>Service request records</h2>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+         <div class="card h-100 card-lg">
+            <div class="row">
+               <div class="card h-100 card-lg">
+                  <div class="p-6">
+                     <div class="row justify-content-between">
+                           <div class="col-md-4 col-12">
+                              <form class="d-flex" role="search" method = "GET" action = "{{url_for('staff.search_services') }}">
+                                 <input class="form-control" type="search" placeholder="Search Service Id or Equipment Id" aria-label="Search" name="search_query"/>
+                              </form>
+                           </div>
+                     </div>
+                  </div>
+      
+                  <div class="card-body p-0">
+                     <div class="table-responsive">
+                        {% if services %}
+                           <table class="table table-centered table-borderless text-nowrap table-hover">
+                              <thead class="bg-light">
+                              <tr>
+                                 <th scope="col">Service Id</th>
+                                 <th scope="col">Equipment Id</th>
+                                 <th scope="col">Service Date</th>
+                                 <th scope="col">Description</th>
+                                 <th scope="col">Cost</th>
+                              
+                              </tr>
+                              </thead>
+                              <tbody>
+                              {% for service in services%}
+                                 <tr>
+                                 <td>{{service["service_id"]}}</td>
+                                 <td>{{service["equipment_id"]}}</td>
+      
+                                 <td>{{service["service_date"]}}</td>
+
+                                 <td>{{service["description"]}}</td>
+      
+                                 <td>${{service["cost"]}}</td>
+                              </tr>
+                              {% endfor %}
+                              </tbody>
+                        </table>
+                        {% else %}
+                           <div class="ps-6">
+                              <p>There are no service requests found.</p>
+                           </div>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'staff_dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="container">
+   <div class="row mb-8">
+       <div class="col-md-12">
+           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+               <div>
+                   <h2>Equipment Condition</h2>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+         <div class="card h-100 card-lg">
+            <div class="row">
+               <div class="card h-100 card-lg">
+                  <div class="p-6">
+                     <div class="row justify-content-between">
+                           <div class="col-md-4 col-12">
+                              <form class="d-flex" role="search" method = "GET" action = "{{url_for('staff.search') }}">
+                                 <input class="form-control" type="search" placeholder="Search Serial Number" aria-label="Search" name="search_query"/>
+                              </form>
+                           </div>
+                     </div>
+                  </div>
+      
+                  <div class="card-body p-0">
+                     <div class="table-responsive">
+                        {% if equipments %}
+                           <table class="table table-centered table-borderless text-nowrap table-hover">
+                              <thead class="bg-light">
+                              <tr>
+                                 <th scope="col">Sub Category</th>
+                                 <th scope="col">Serial Number</th>
+                                 <th scope="col">equipment Condition</th>
+                                 <th scope="col">equipment Status</th>
+                                 <th></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              {% for equipment in equipments%}
+                                 {% if equipment["equipment_status"] != 'removed'%}
+                                 <tr>
+                                    <td>
+                                       {{equipment["sub_category_name"]}}
+                                       
+                                    </td>
+                                    <td>
+                                    {{equipment["serial_number"]}}
+                                    </td>
+         
+                                    <td>{{equipment["equipment_condition"] | title}}</td>
+
+                                    <td>{{equipment["equipment_status"] | title}} </td>
+                                    
+                                    <td>
+                                       <div class="dropdown">
+                                          <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                             <i class="feather-icon icon-more-vertical fs-5"></i>
+                                          </a>
+                                          <ul class="dropdown-menu">
+                                             <li>
+                                                <a class="dropdown-item" href="{{ url_for('staff.retire_equipment', equipment_id=equipment['equipment_id']) }}">
+                                                   <i class="bi bi-trash me-3"></i>
+                                                   Retire 
+                                                </a>
+                                             </li>
+                                             <li>
+                                                <a class="dropdown-item" href="{{ url_for('staff.edit_equipment_condition', equipment_id=equipment['equipment_id']) }}">
+                                                   <i class="bi bi-pencil-square me-3"></i>
+                                                   Edit
+                                                </a>
+                                             </li>
+                                             {% if equipment["equipment_condition"] !=  "out_of_service" %}
+                                                <li>
+                                                   <a class="dropdown-item" href="{{ url_for('staff.request_service', equipment_id=equipment['equipment_id']) }}">
+                                                      <i class="bi bi-file-text me-3"></i>
+                                                      Request Service
+                                                   </a>
+                                                </li>
+                                             {% endif %}
+                                          </ul>
+                                       </div>
+                                    </td>
+                                 </tr>
+                                 {% endif %}
+                              {% endfor %}
+                              </tbody>
+                        </table>
+                        {% else %}
+                           <div class="ps-6">
+                              <p>There are no equipments found.</p>
+                           </div>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

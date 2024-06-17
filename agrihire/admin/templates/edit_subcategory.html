@@ -1,0 +1,79 @@
+{% extends 'admin_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+       <div class="card h-100 card-lg">
+          <div class="card-body p-0">
+            <div class="row">
+                <!-- Content on the left -->
+                <div class="col-lg-7 col-md-8 col-12">
+                    <div class="py-6 p-md-6 p-lg-10">
+                       <div>
+                          <h5 class="mb-4">Edit SubCategory</h5>
+                          <form method="POST" action="{{ url_for('admin.edit_subcategory', sub_category_id=sub_category_id) }}" enctype="multipart/form-data">
+                             {{ form.csrf_token }}
+                             <div class="mb-3">
+                               <label class="form-label">{{ form.category.label }}</label>
+                               {{ form.category(class_="form-control", disabled=True) }}
+                             </div>
+                             
+                             <div class="mb-3">
+                               <label class="form-label">{{ form.subcategory.label }}</label>
+                               {{ form.subcategory(class_="form-control", disabled=True) }}
+                             </div>
+                             
+                             <div class="mb-3">
+                               <label class="form-label">{{ form.weight.label }}</label>
+                               {{ form.weight(class_="form-control", disabled=True) }}
+                             </div>
+                             
+                             <div class="mb-3">
+                               <label class="form-label">{{ form.dimension.label }}</label>
+                               {{ form.dimension(class_="form-control", disabled=True) }}
+                             </div>
+                             
+                             <div class="mb-3">
+                                <label class="form-label">{{ form.hire_cost.label }}</label>
+                                {{ form.hire_cost(class="form-control") }}
+                             </div>
+                             
+                             <div class="mb-3">
+                                <label class="form-label">{{ form.shipping_price.label }}</label>
+                                {{ form.shipping_price(class="form-control", pattern="[A-Za-z]+", title="Only letters are allowed.") }}
+                             </div>
+
+                             <div class="mb-5">
+                                <label class="form-label">{{ form.min_hire_period.label }}</label>
+                                {{ form.min_hire_period(class="form-control") }}
+                             </div>
+                             
+                             <div class="mb-5">
+                                <label class="form-label">{{ form.max_hire_period.label }}</label>
+                                {{ form.max_hire_period(class="form-control") }}
+                             </div>
+
+                             <div class="mb-3">
+                               <label class="form-label">{{ form.description.label }}</label>
+                               {{ form.description(class="form-control", disabled=True) }}
+                              </div>
+                            
+                             <div class="mb-3">
+                                <button class="btn btn-primary">Update Sub Category</button>
+                             </div>
+                          </form>
+                       </div>
+                    </div>
+                 </div>
+                 <!-- Image on the Right -->
+                 <div class="col-lg-5 col-md-4 col-12 d-flex justify-content-center align-items-center">
+                    <img src="{{ url_for('static', filename='assets/images/products/' + image['image_url']) }}" alt="" style="width: 300px; height: 300px; object-fit: cover; border-radius: 0;" />
+                 </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock %}

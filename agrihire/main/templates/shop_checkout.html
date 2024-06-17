@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+{% block title %}Shop Items AgriHire{% endblock %}
+
+{% block content %}
+<main>
+   <!-- section-->
+   <div class="mt-4">
+      <div class="container">
+         <!-- row -->
+         <div class="row">
+            <!-- col -->
+            <div class="col-12">
+               <!-- breadcrumb -->
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb mb-0">
+                     <li class="breadcrumb-item"><a href="{{url_for('main.home')}}">Home</a></li>
+                     <li class="breadcrumb-item"><a href="{{url_for('main.shop_cart')}}">Shop Cart</a></li>
+                     <li class="breadcrumb-item active" aria-current="page">Shop Checkout</li>
+                  </ol>
+               </nav>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- section -->
+   <section class="mb-lg-14 mb-8 mt-8">
+      <div class="container">
+         <div>
+            <form method="POST" action="{{ url_for('main.shop_checkout') }}" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <!-- row -->
+            <div class="row">
+               <div class="col-lg-7 col-md-12">
+                  <!-- accordion -->
+                  <div class="accordion accordion-flush" id="accordionFlushExample">
+                     <!-- accordion item -->
+                     <div class="accordion-item py-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                           <!-- heading one -->
+                           <a
+                              href="#"
+                              class="fs-5 text-inherit collapsed h4"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapseTwo"
+                              aria-expanded="true"
+                              aria-controls="flush-collapseTwo">
+                              <i class="feather-icon icon-map-pin me-2 text-muted"></i>
+                              Delivery Options
+                           </a>
+                           <!-- collapse -->
+                        </div>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionFlushExample">
+                           <div class="mt-5">
+                                 <div class="row d-flex">
+                                    {% for subfield in form.address_type %}
+                                    <div class="col-lg-4 col-12 mb-4 d-flex">
+                                       <!-- Address -->
+                                       <div class="card card-body p-6 flex-fill">
+                                          <div class="form-check mb-4">
+                                             {{ subfield(class="form-check-input", id=subfield.id) }} 
+                                             <label class="form-check-label text-dark" for="{{ subfield.id }}">{{ subfield.label.text }}</label>
+                                          </div>
+                                          <!-- Home address -->
+                                          {% if subfield.data == 'home' %}
+                                             <address>
+                                                <strong>{{ user_details.title }}. {{ user_details.first_name}} {{ user_details.last_name }}</strong>
+                                                <br />
+                                                {{ user_details.address }}
+                                                <br />
+                                                <abbr title="Phone">P: {{ user_details.phone }}</abbr>
+                                             </address>
+                                             <span class="text-danger">Default address</span>
+                                          <!-- Show text area for shipping address -->
+                                          {% elif subfield.data == 'shipping' %}
+                                             {{ form.shipping_address(class="form-control", rows=4) }}
+                                          <!-- Self-Pickup Option -->
+                                          {% elif subfield.data == 'pickup' %}
+                                             <div class="mb-3 text-muted">
+                                                <p>Select this option to pick up your order at the store.</p>
+                                             </div>
+                                          {% endif %}
+                                       </div>
+                                    </div>
+                                 {% endfor %}
+                                 <div class="mt-5 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-primary ms-2" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                       Next
+                                    </a>
+                                 </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+      
+                     <!-- Special Instructions -->
+                     <div class="accordion-item py-4">
+                        <a href="#" class="text-inherit h5" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                           <i class="feather-icon icon-shopping-bag me-2 text-muted"></i>
+                           Special Instructions 
+                           <!-- collapse -->
+                        </a>
+                        <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                           <div class="mt-5">
+                              {{ form.special_instructions.label(class="form-label sr-only", for="SpecialInstructions") }}
+                              {{ form.special_instructions(class="form-control", id="SpecialInstructions", rows=3, placeholder="Write Special Instructions") }}
+                              <p class="form-text">Add instructions for how you want your order shopped and/or delivered</p>
+                              <div class="mt-5 d-flex justify-content-end">
+                                 <a
+                                    href="#"
+                                    class="btn btn-outline-gray-400 text-muted"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseTwo"
+                                    aria-expanded="false"
+                                    aria-controls="flush-collapseTwo">
+                                    Prev
+                                 </a>
+                                 <a href="#" class="btn btn-primary ms-2" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                    Next
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Payment Method -->
+                     <div class="accordion-item py-4">
+                        <a href="#" class="text-inherit h5" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                           <i class="feather-icon icon-credit-card me-2 text-muted"></i>
+                           Payment Method
+                           <!-- collapse -->
+                        </a>
+                        <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                           <div class="mt-5">
+                                    <div class="card card-bordered shadow-none mb-2">
+                                       <div class="card-body p-6">
+                                          <div class="d-flex mb-4">
+                                                <div class="form-check">
+                                                   <!-- input -->
+                                                   <label class="form-check-label ms-2"></label>
+                                                </div>
+                                                <div>
+                                                   <h5 class="mb-1 h6">Credit / Debit Card</h5>
+                                                   <p class="mb-0 small">Safe money transfer using your bank account. We support Mastercard card and Visa.</p>
+                                                </div>
+                                          </div>
+                                          <!-- Card Type Radio Buttons -->
+                                          <div class="mb-3 col-12 col-md-12 mb-4">
+                                                <p>Card Type</p>
+                                                <div class="d-inline-flex">
+                                                   {% for subfield in form.card_type %}
+                                                   <div class="form-check me-2">
+                                                      {{ subfield(class="form-check-input") }}
+                                                      <label class="form-check-label" for="{{ subfield.id }}">
+                                                            {% if subfield.label.text == 'Visa' %}
+                                                            <img src="{{ url_for('static', filename='assets/images/payment/visa.svg') }}" alt="Visa">
+                                                            {% elif subfield.label.text == 'MasterCard' %}
+                                                            <img src="{{ url_for('static', filename='assets/images/payment/mastercard.svg') }}" alt="MasterCard">
+                                                            {% endif %}
+                                                      </label>
+                                                   </div>
+                                                   {% endfor %}
+                                                </div>
+                                          </div>
+                                          <div class="row g-2">
+                                                <div class="col-12">
+                                                   <!-- Digits -->
+                                                   <div class="mb-3">
+                                                      {{ form.digits.label(class="form-label") }}
+                                                      {{ form.digits(class="form-control", placeholder="1234 5678 9012 3456") }}
+                                                   </div>
+                                                </div>
+                                                <div class="col-md-4 col-12">
+                                                   <!-- Full Name -->
+                                                   <div class="mb-3">
+                                                      {{ form.name_on_card.label(class="form-label") }}
+                                                      {{ form.name_on_card(class="form-control", placeholder="Full Name") }}
+                                                   </div>
+                                                </div>
+                                                <!-- Expiry Month -->
+                                                <div class="col-md-3 col-12">
+                                                   <div class="mb-1 mb-lg-0">
+                                                      {{ form.expiration_month.label(class="form-label") }}
+                                                      {{ form.expiration_month(class="form-control", placeholder="MM") }}
+                                                   </div>
+                                                </div>
+                                                <!-- Expiry Year -->
+                                                <div class="col-md-3 col-12">
+                                                   <div class="mb-1 mb-lg-0">
+                                                      {{ form.expiration_year.label(class="form-label") }}
+                                                      {{ form.expiration_year(class="form-control", placeholder="YY") }}
+                                                   </div>
+                                                </div>
+                                                <div class="col-md-2 col-12">
+                                                   <!-- CVV -->
+                                                   <div class="mb-3 mb-lg-0">
+                                                      {{ form.security_code.label(class="form-label") }}
+                                                      {{ form.security_code(class="form-control", placeholder="CVV") }}
+                                                   </div>
+                                                </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- Button -->
+                                    <div class="mt-5 d-flex justify-content-end">
+                                       <a href="#" class="btn btn-outline-gray-400 text-muted" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">Prev</a>
+                                       <button class="btn btn-primary ms-2" type="submit">Place Order</button>
+                                    </div>
+                              
+                           </div>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+
+               <div class="col-md-12 offset-xl-1 col-xl-4 col-lg-6">
+                  <div class="mt-4 mt-lg-0">
+                     <div class="card shadow-sm">
+                        <h5 class="px-6 py-4 bg-transparent mb-0">Order Details</h5>
+                        <ul class="list-group list-group-flush">
+                           <!-- list cart items -->
+                           {% for item in shop_cart_items %}
+                           <li class="list-group-item px-4 py-3">
+                              <div class="row align-items-center">
+                                 <div class="col-2 col-md-2">
+                                    <img src="{{ url_for('static', filename='assets/images/products/') }}{{ item.image_url }}" alt="Cart Item" class="img-fluid" />
+                                 </div>
+                                 <div class="col-5 col-md-5">
+                                    <h6 class="mb-0">{{ item.name }}</h6>
+                                    <span><small class="text-muted">{{ item.checkout_datetime }} - {{ item.return_datetime }}</small></span>
+                                 </div>
+                                 <div class="col-1 col-md-1 text-center text-muted">
+                                    <span>{{ item.quantity }}</span>
+                                 </div>
+                                 <div class="col-4 text-lg-end text-start text-md-end col-md-4">
+                                    <span class="fw-bold">{{ item.total_cost }}</span>
+                                 </div>
+                              </div>
+                           </li>
+                           {% endfor %}
+
+                           <!-- Subtotal -->
+                           <li class="list-group-item px-4 py-3">
+                              <div class="d-flex align-items-center justify-content-between mb-2">
+                                 <div>Item Subtotal (Exl. GST)</div>
+                                 <div class="fw-bold">{{ item_subtotal }}</div>
+                              </div>
+                              <div class="d-flex align-items-center justify-content-between mb-2">
+                                 <div>
+                                    GST
+                                    <i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip" title="15% Goods and Service Tax"></i>
+                                 </div>
+                                 <div class="fw-bold">{{ gst }}</div>
+                              </div>
+                              <div class="d-flex align-items-center justify-content-between">
+                                 <div>
+                                    Shipping
+                                    <i class="feather-icon icon-info text-muted" data-bs-toggle="tooltip" title="Refer to Our Shipping Policy"></i>
+                                 </div>
+                                 <div class="fw-bold" id="shippingCost"></div>
+                                 
+                              </div>
+                           </li>
+                           <!-- list group item -->
+                           <li class="list-group-item px-4 py-3">
+                              <div class="d-flex align-items-center justify-content-between fw-bold">
+                                 <div>Subtotal</div>
+                                 <div id="finalSubtotal">{{ subtotal }}</div>
+                              </div>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+</main>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+       function updateShippingCost() {
+           var shippingCost = 0;
+           var addressType = document.querySelector('input[name="address_type"]:checked').value;
+   
+           // Determine if shipping should be included based on the selected address type
+           var includeShipping = (addressType !== 'pickup');
+   
+           console.log("Include Shipping:", includeShipping);
+   
+           if (includeShipping) {
+               {% for item in shop_cart_items %}
+               var itemPriceStr = '{{ item.shipping_price }}'.replace('$', '').replace(',', '').trim(); // Remove potential formatting
+               var itemShippingPrice = parseFloat(itemPriceStr);
+               console.log("Parsed Shipping Price for item:", itemShippingPrice); // Output parsed price
+               if (!isNaN(itemShippingPrice)) {
+                   shippingCost += itemShippingPrice;
+               } else {
+                   console.error("Invalid shipping price found:", itemPriceStr); // Error on parsing
+               }
+               {% endfor %}
+           }
+   
+           console.log("Total Shipping Cost:", shippingCost); // Output total shipping cost
+   
+           var baseSubtotalStr = '{{ subtotal }}'.replace('$', '').replace(',', '').trim(); // Ensure any formatting is removed
+           var baseSubtotal = parseFloat(baseSubtotalStr);
+           console.log("Parsed Base Subtotal:", baseSubtotal); // Output parsed subtotal
+   
+           if (isNaN(baseSubtotal)) {
+               console.error("Base subtotal parsing error with data:", baseSubtotalStr); // Check for NaN in subtotal
+           }
+   
+           var finalSubtotal = includeShipping ? baseSubtotal + shippingCost : baseSubtotal;
+           console.log("Final Subtotal Calculation:", finalSubtotal); // Final subtotal calculation
+   
+           // Format subtotal and shipping cost to dollar
+           var formatter = new Intl.NumberFormat('en-US', {
+               style: 'currency',
+               currency: 'USD'
+           });
+   
+           document.getElementById('finalSubtotal').textContent = isNaN(finalSubtotal) ? "Error Calculating Total" : formatter.format(finalSubtotal);
+           document.getElementById('shippingCost').textContent = includeShipping ? formatter.format(shippingCost) : 'Free';
+       }
+   
+       // Attach event listeners
+       document.querySelectorAll('input[name="address_type"]').forEach(function (radio) {
+           radio.addEventListener('change', updateShippingCost);
+       });
+   
+       // Initial calculation
+       updateShippingCost();
+   });
+</script>
+   
+   
+{% endblock %}
+

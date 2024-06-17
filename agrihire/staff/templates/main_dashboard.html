@@ -1,0 +1,235 @@
+{% extends 'staff_dashboard.html' %}
+
+{% block dashboard_content %}
+
+<!-- row -->
+<div class="row mb-8">
+   <div class="col-md-12">
+      <!-- card -->
+      <div
+         class="card bg-light border-0 rounded-4"
+         style="background-image: url('{{ url_for('static', filename='assets/images/banner/dashboard.png') }}'); background-repeat: no-repeat; background-size: cover; background-position: right">
+         <div class="card-body p-lg-12">
+            <h1>Welcome back! AgriHire</h1>
+            <p>AgriHire Solutions is a professional company for customer.</p>
+            <a href="{{ url_for('main.add_product') }}" class="btn btn-primary">Create Product</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+       <div class="card h-100 card-lg">
+          <div class="p-6">
+             <h3 class="mb-0 fs-5">Today's Self PickUp Orders</h3>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+               {% if orders_for_today_pickup %}
+                <table class="table table-centered table-borderless text-nowrap table-hover">
+                   <thead class="bg-light">
+                     <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Order Status</th>
+                        <th></th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {% for order in orders_for_today_pickup%}
+                        <tr>
+                           <td>
+                              <a href = "{{ url_for('staff.view_order_details', order_id = order['order_id'])}}">
+                              {{order["order_id"]}}
+                              </a>
+                           </td>
+                           <td value = {{order["user_id"]}}>
+                              <a href = "{{ url_for('staff.view_customer_profile', user_id = order['user_id'])}}">
+                              {{order["customer_name"]}}
+                              </a>
+                           </td>
+
+                           <td>${{order["amount"]}}</td>
+                           <td>{{order["order_date"]}}</td>
+                           {% if order["status"] == 'confirmed' %}
+                              <td> <span class="badge bg-success">{{ order["status"] }} </span></td>
+                           {% elif order["status"] == 'cancelled' %}
+                              <td>  <span class="badge bg-danger">{{ order["status"] }}</span></td>
+                           {% endif %}
+                           <td>
+                              <div class="dropdown">
+                                 <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="feather-icon icon-more-vertical fs-5"></i>
+                                 </a>
+                                 <ul class="dropdown-menu">
+                                    <li>
+                                       <a class="dropdown-item" onclick="confirmDelete({{order['order_id']}});">
+                                          <i class="bi bi-trash me-3"></i>
+                                          Delete
+                                       </a>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </td>
+                        </tr>
+                     {% endfor %}
+                   </tbody>
+               </table>
+               {% else %}
+                  <div class="ps-6">
+                     <p>There are no bookings found.</p>
+                  </div>
+               {% endif %}
+            </div>
+         </div>
+
+          <hr/>
+
+          <div class="p-6">
+            <h3 class="mb-0 fs-5">Today's Shipping Orders</h3>
+         </div>
+         <div class="card-body p-0">
+           <div class="table-responsive">
+              {% if orders_for_today_shipping %}
+               <table class="table table-centered table-borderless text-nowrap table-hover">
+                  <thead class="bg-light">
+                    <tr>
+                       <th scope="col">Order Id</th>
+                       <th scope="col">Customer Name</th>
+                       <th scope="col">Price</th>
+                       <th scope="col">Order Date</th>
+                       <th scope="col">Order Status</th>
+                       <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders_for_today_shipping%}
+                       <tr>
+                          <td>
+                             <a href = "{{ url_for('staff.view_order_details', order_id = order['order_id'])}}">
+                             {{order["order_id"]}}
+                             </a>
+                          </td>
+                          <td value = {{order["user_id"]}}>
+                             <a href = "{{ url_for('staff.view_customer_profile', user_id = order['user_id'])}}">
+                             {{order["customer_name"]}}
+                             </a>
+                          </td>
+
+                          <td>${{order["amount"]}}</td>
+                          <td>{{order["order_date"]}}</td>
+                          {% if order["status"] == 'confirmed' %}
+                             <td> <span class="badge bg-success">{{ order["status"] }} </span></td>
+                          {% elif order["status"] == 'cancelled' %}
+                             <td>  <span class="badge bg-danger">{{ order["status"] }}</span></td>
+                          {% endif %}
+                          <td>
+                             <div class="dropdown">
+                                <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                   <i class="feather-icon icon-more-vertical fs-5"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                   <li>
+                                      <a class="dropdown-item" onclick="confirmDelete({{order['order_id']}});">
+                                         <i class="bi bi-trash me-3"></i>
+                                         Delete
+                                      </a>
+                                   </li>
+                                </ul>
+                             </div>
+                          </td>
+                       </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              {% else %}
+                 <div class="ps-6">
+                    <p>There are no bookings found.</p>
+                 </div>
+              {% endif %}
+           </div>
+        </div>
+
+         <hr/>
+
+          <div class="p-6">
+            <h3 class="mb-0 fs-5"> This Week Orders</h3>
+         </div>
+         <div class="card-body p-0">
+            <div class="table-responsive">
+               {% if orders_for_this_week %}
+                <table class="table table-centered table-borderless text-nowrap table-hover">
+                   <thead class="bg-light">
+                     <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Order Status</th>
+                        <th></th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {% for order in orders_for_this_week%}
+                        <tr>
+                           <td> 
+                              <a href = "{{ url_for('staff.view_order_details', order_id = order['order_id'])}}">
+                                 {{order["order_id"]}}
+                              </a>
+                           </td>
+                           <td value = {{order["user_id"]}}>
+                              <a href = "{{ url_for('staff.view_customer_profile', user_id = order['user_id'])}}">
+                              {{order["customer_name"]}}
+                              </a>
+                           </td>
+
+                           <td>${{order["amount"]}}</td>
+                           <td>{{order["order_date"]}}</td>
+                           {% if order["status"] == 'confirmed' %}
+                              <td> <span class="badge bg-success">{{ order["status"] }} </span></td>
+                           {% elif order["status"] == 'cancelled' %}
+                              <td>  <span class="badge bg-danger">{{ order["status"] }}</span></td>
+                           {% endif %}
+                           <td>
+                              <div class="dropdown">
+                                 <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="feather-icon icon-more-vertical fs-5"></i>
+                                 </a>
+                                 <ul class="dropdown-menu">
+                                    <li>
+                                       <a class="dropdown-item"  onclick="confirmDelete({{order['order_id']}});">
+                                          <i class="bi bi-trash me-3"></i>
+                                          Delete
+                                       </a>
+                                    </li>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </td>
+                        </tr>
+                     {% endfor %}
+                   </tbody>
+               </table>
+               {% else %}
+                  <div class="ps-6">
+                     <p>There are no bookings found.</p>
+                  </div>
+               {% endif %}
+            </div>
+         </div>
+       </div>
+    </div>
+ </div>
+
+ <script>
+   function confirmDelete(order_id) {
+       if (confirm("Are you sure you want to cancel this order ?")) {
+           window.location.href = "{{ url_for('staff.cancel_order', order_id=0) }}" .replace('0', order_id);
+       }
+     }
+</script>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+<div class="container">
+    <div class="row mb-8">
+        <div class="col-md-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+                <div>
+                    <h2> Orders Settings</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+        <div class="card h-100 card-lg">
+            <div class="card-body p-0">
+                <!-- Content -->
+                <div class="table-responsive">
+                    <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Payment ID</th>
+                                <th>Amount</th>
+                                <th>Payment Date</th>
+                                <th>User ID</th>
+                                <th>Customer Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Order Date</th>
+                                <th>Payment Method</th>
+                                <th>Special Instruction</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order['order_id'] }}</td>
+                                <td>{{ order['payment_id'] }}</td>
+                                <td>${{ order['amount'] }}</td>
+                                <td>{{ order['payment_date'] }}</td>
+                                <td>{{ order['user_id'] }}</td>
+                                <td>{{ order['customer_name'] }}</td>
+                                <td>{{ order['address'] }}</td>
+                                <td>{{ order['phone'] }}</td>
+                                <td>{{ order['email'] }}</td>
+                                <td>{{ order['order_date'] }}</td>
+                                <td>{{ order['payment_method'] }}</td>
+                                <td>{{ order['special_instruction'] }}</td>
+                                <td>{{ order['status'] |title }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>        
+        </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

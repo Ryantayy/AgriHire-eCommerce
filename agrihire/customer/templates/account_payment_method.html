@@ -1,0 +1,188 @@
+{% extends 'dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<!-- Side Nav -->
+<div class="col-lg-3 col-md-4 col-12 border-end d-none d-md-block">
+   <div class="pt-10 pe-lg-10">
+      
+      <ul class="nav flex-column nav-pills nav-pills-dark">
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_orders') }}">
+               <i class="feather-icon icon-shopping-bag me-2"></i>
+               Your Orders
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.account_settings') }}">
+               <i class="feather-icon icon-settings me-2"></i>
+               Settings
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link active" href="{{ url_for('customer.account_payment_method') }}">
+               <i class="feather-icon icon-credit-card me-2"></i>
+               Payment Method
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.enquiry') }}">
+               <i class="feather-icon icon-help-circle me-2"></i>
+               Enquiry
+            </a>
+         </li>
+
+         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.notification') }}">
+               <i class="feather-icon icon-bell me-2"></i>
+               Notification
+            </a>
+         </li>
+         
+         <li class="nav-item">
+            <hr />
+         </li>
+         
+         <li class="nav-item">
+            <a class="nav-link" href="{{url_for('auth.logout')}}">
+               <i class="feather-icon icon-log-out me-2"></i>
+               Log out
+            </a>
+         </li>
+      </ul>
+   </div>
+</div>
+
+<!-- Main Content -->
+<div class="col-lg-9 col-md-8 col-12">
+   <div class="py-6 p-md-6 p-lg-10">
+      <!-- heading -->
+      <div class="d-flex justify-content-between mb-6 align-items-center">
+         <h2 class="mb-0">Payment Methods</h2>
+         <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</a>
+      </div>
+      {% if payment_methods %}
+      <ul class="list-group list-group-flush">
+         <!-- List group item -->
+         {% for method in payment_methods %}
+         <li class="list-group-item py-5 px-0">
+            <div class="d-flex justify-content-between">
+               <div class="d-flex">
+                  {% if method.card_type|lower == 'mastercard' %}
+                  <img src="{{ url_for('static', filename='assets/images/svg-graphics/mastercard.svg') }}" alt="mastercard" />
+                  {% elif method.card_type|lower == 'visa' %}
+                  <!-- img -->
+                  <img src="{{ url_for('static', filename='assets/images/svg-graphics/visa.svg') }}" alt="visa" />
+                  <!-- text -->
+                  {% endif %}
+                  <div class="ms-4">
+                     <h5 class="mb-0 h6 h6">**** **** **** {{method.digits[-4:]}}</h5>
+                     <p class="mb-0 small">Expires in {{method.expiration_month}}/{{method.expiration_year}}</p>
+                  </div>
+               </div>
+               <div>
+                  <!-- Form for Remove button -->
+                  <form action="{{ url_for('customer.remove_payment_method') }}" method="POST" style="display:inline;">
+                     <input type="hidden" name="card_id" value="{{ method.card_id }}">
+                     <button type="submit" class="btn btn-outline-gray-400 btn-sm">Remove</button>
+                  </form>
+               </div>
+            </div>
+         </li>
+         {% endfor %}
+      </ul>
+      {% else %}
+      <div class="alert alert-success" role="alert">
+         You have no saved payment methods. Please add a payment method using the button above.
+      </div>
+      {% endif %}
+   </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <!-- modal content -->
+      <div class="modal-content">
+         <!-- modal header -->
+         <div class="modal-header align-items-center d-flex">
+            <h5 class="modal-title" id="paymentModalLabel">Add New Payment Method</h5>
+            <!-- button -->
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <!-- Modal body -->
+         <div class="modal-body">
+            <div>
+               <!-- Form -->
+               <form method="POST" action="{{ url_for('customer.account_payment_method') }}" class="row mb-4 needs-validation" enctype="multipart/form-data" novalidate>
+                  {{ form.csrf_token }}
+                  <!-- Card Type Radio Buttons -->
+                  <div class="mb-3 col-12 col-md-12 mb-4">
+                     <h5 class="mb-3">Credit / Debit card</h5>
+                     <div class="d-inline-flex">
+                        {% for subfield in form.card_type %}
+                           <div class="form-check me-2">
+                                 {{ subfield(class="form-check-input") }}
+                                 <label class="form-check-label" for="{{ subfield.id }}">
+                                    {% if subfield.label.text == 'Visa' %}
+                                       <img src="{{ url_for('static', filename='assets/images/payment/visa.svg') }}" alt="Visa">
+                                    {% elif subfield.label.text == 'MasterCard' %}
+                                       <img src="{{ url_for('static', filename='assets/images/payment/mastercard.svg') }}" alt="MasterCard">
+                                    {% endif %}
+                                 </label>
+                           </div>
+                        {% endfor %}
+                     </div>
+                  </div>               
+                  <!-- Name on card -->
+                  <div class="mb-3 col-12 col-md-4">
+                     {{ form.name_on_card.label(class="form-label")}}
+                     {{ form.name_on_card(class="form-control", required=True) }}
+                     <div class="invalid-feedback">Please enter the name on card.</div>
+                  </div>
+                  <!-- Month -->
+                  <div class="mb-3 col-12 col-md-4">
+                        {{ form.expiration_month.label(class="form-label") }}
+                        {{ form.expiration_month(class="form-control", required=True) }}
+                     <div class="invalid-feedback">Please select month in a form of (MM). </div>
+                  </div>
+                  <!-- Year -->
+                  <div class="mb-3 col-12 col-md-4">
+                     {{ form.expiration_year.label(class="form-label") }}
+                     {{ form.expiration_year(class="form-control", required=True) }}
+                     <div class="invalid-feedback">Please select year in a form of (YY).</div>
+                  </div>
+                  <!-- Card number -->
+                  <div class="mb-3 col-md-8 col-12">
+                     {{ form.digits.label(class="form-label") }}
+                     {{ form.digits(class="form-control", required=True) }}
+                     <div class="invalid-feedback">Card Number must be 16 digits.</div>
+                  </div>
+                  <!-- CVV -->
+                  <div class="mb-3 col-md-4 col-12">
+                     <div class="mb-3">
+                        {{ form.security_code.label(class="form-label") }}
+                        {{ form.security_code(class="form-control", required=True) }}
+                        <div class="invalid-feedback">Security must be 2-3 digits.</div>
+                     </div>
+                  </div>
+                  <!-- Button -->
+                  <div class="col-md-6 col-12">
+                     <button class="btn btn-primary" type="submit">Add New Card</button>
+                     <button class="btn btn-outline-gray-400 text-muted" type="button" data-bs-dismiss="modal">Close</button>
+                  </div>
+               </form>
+               <span>
+                  <strong>Note:</strong>
+                  that you can later remove your card at the account setting page.
+               </span>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+               

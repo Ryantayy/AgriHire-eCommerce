@@ -1,0 +1,39 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="row">
+    <div class="card h-100 card-lg">
+       <div class="p-6">
+    
+          <a href="{{ url_for('manager.equipment_condition') }}" class="btn btn-light">Back</a>
+       </div>
+ 
+       <div class="container">
+        <h1>Retire for Equipment</h1>
+        <form id="requestServiceForm" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <label class="form-label">{{ form.equipment_id.label }}</label>
+                {{ form.equipment_id(class="form-control", disabled=disabled) }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{ form.retire_date.label }}</label>
+                {{ form.retire_date(class="form-control") }}
+            </div>
+            <button type="button" class="btn btn-primary" onclick="confirmDeletion('{{ url_for('manager.retire_equipment', equipment_id=equipment_id) }}')">{{ form.submit.label }}</button>
+        </form>
+    </div>
+    </div>
+ </div>
+ <script>
+    function confirmDeletion(actionUrl) {
+        if (confirm("Are you sure you want to delete this equipment?")) {
+            var form = document.getElementById('requestServiceForm');
+            form.action = actionUrl;
+            form.submit();
+        }
+    }
+</script>
+{% endblock %}
+

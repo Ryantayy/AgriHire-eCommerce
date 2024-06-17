@@ -1,0 +1,46 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+<div class="container">
+   <div class="row mb-8">
+       <div class="col-md-12">
+           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+               <div>
+                   <h2>Inventory Settings</h2>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+         <div class="card h-100 card-lg">
+            <div class="card-body p-0">
+               <!-- Content -->
+               <div class="table-responsive">
+                  <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                     <thead class="bg-light">
+                        <tr>
+                           <th>Equipment Name</th>
+                           <th>Quantity</th>
+                           <th>Store Name</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for item in inventory %}
+                        <tr>
+                           <td>{{ item.name }}</td>
+                           <td>{{ item.available_quantity }}</td>
+                           <td>{{ item.store_name }}</td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

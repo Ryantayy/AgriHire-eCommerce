@@ -1,0 +1,165 @@
+{% extends 'dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="row p-4">
+    <div class="col-xl-12 col-12 mb-5">
+       <!-- card -->
+       <div class="card h-100 card-lg">
+          <div class="card-body p-6">
+             <div class="d-md-flex justify-content-between">
+                <div class="d-flex align-items-center mb-2 mb-md-0">
+                   <h2 class="mb-0">Order ID: {{order["order_id"]}} </h2>
+                   <span class="order-status p-2">
+                     {% if order['status'] == 'confirmed' %}
+                         <span class="badge bg-success">Confirmed</span>
+                     {% elif order['status'] == 'cancelled' %}
+                         <span class="badge bg-danger">Cancelled</span>
+                     {% endif %}
+                 </span>
+                </div>
+               
+             </div>
+             <div class="mt-8">
+                <div class="row">
+                 <div class="col-lg-4 col-md-4 col-12">
+                      <div class="mb-6">
+                         <h6>Customer Details</h6>
+                         <p class="mb-1 lh-lg">
+                          {{order["customer_name"]}}
+                            <br />
+                            {{order["email"]}}
+                            <br />
+                            {{order["phone"]}}
+                         </p>
+
+                      </div>
+                   </div>
+                
+                   <div class="col-lg-4 col-md-4 col-12">
+                      <div class="mb-6">
+                         <h6>Shipping Address</h6>
+                         <p class="mb-1 lh-lg">
+                            {{order["address"]}}
+                         </p>
+                      </div>
+                   </div>
+                 
+                   <div class="col-lg-4 col-md-4 col-12">
+                      <div class="mb-6">
+                         <h6>Order Details</h6>
+                         <p class="mb-1 lh-lg">
+                            Order ID:
+                            <span class="text-dark">{{order["order_id"]}}</span>
+                            <br />
+                            Order Date:
+                            <span class="text-dark">{{order["payment_date"]}}</span>
+                            <br />
+                            Order Total:
+                            <span class="text-dark">${{invoice_subtotal}}</span>
+                         </p>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="row">
+             <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table mb-0 text-nowrap table-centered">
+                      <thead class="bg-light">
+                         <tr>
+                            <tr>
+                                <th scope="col">Equipment Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Booking Datetime</th>
+                                <th scope="col">Return Datetime</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Store</th>
+                             
+                             </tr>
+                         </tr>
+                      </thead>
+
+                      <tbody>
+                        {% for booking in bookings%}
+                         <tr>
+                            <td>
+                               <a href="#" class="text-inherit">
+                                  <div class="d-flex align-items-center">
+                                     <div>
+                                        <img src="{{ url_for('static', filename='assets/images/products/') }}{{ booking.image_url }}" alt="" class="icon-shape icon-lg" />
+                                     </div>
+                                     <div class="ms-lg-4 mt-2 mt-lg-0">
+                                        <h5 class="mb-0 h6">{{booking["name"]}}</h5>
+                                     </div>
+                                  </div>
+                               </a>
+                            </td>
+                            <td>1</td>
+                            <td>{{booking["checkout_datetime"]}}</td>
+                            <td>{{booking["return_datetime"]}}</td>
+                            <td>${{booking["line_total"]}}</td>
+                            <td>{{booking["store_name"]}}</td>
+                         </tr>
+                         {% endfor %}
+                         <tr>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td colspan="1" class="fw-medium text-dark">
+                               Sub Total :
+                            </td>
+                            <td class="fw-medium text-dark">
+                               ${{invoice_subtotal}}
+                            </td>
+                         </tr>
+                         <tr>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td colspan="1" class="fw-medium text-dark">                          
+                               Shipping Cost
+                            </td>
+                            <td class="fw-medium text-dark">         
+                              ${{total_shipping_price}}
+                            </td>
+                         </tr>
+
+                         <tr>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td class="border-bottom-0 pb-0"></td>
+                            <td colspan="1" class="fw-semibold text-dark">                            
+                               Grand Total
+                            </td>
+                            <td class="fw-semibold text-dark">
+                               ${{invoice_subtotal + total_shipping_price}}
+                            </td>
+                         </tr>
+                      </tbody>
+                   </table>
+                </div>
+             </div>
+          </div>
+          <div class="card-body p-10">
+             <div class="row">
+               <div class="col-md-6 mb-4 mb-lg-0">
+                  <h6>Payment Method</h6>
+                  <span>{{order["payment_method"]}}</span>
+               </div>
+               <div class="col-md-6 mb-4 mb-lg-0 text-end">
+                  <h6>Special Instruction</h6>
+                  <span>{{order["special_instruction"]}}</span>
+               </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+
+{% endblock %}

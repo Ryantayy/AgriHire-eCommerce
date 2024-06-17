@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta content="Codescandy" name="author" />
+      <title>Dashboard Administrator - AgriHire</title>
+      <link href="{{ url_for('static', filename='assets/libs/tiny-slider/dist/tiny-slider.css') }}" rel="stylesheet" />
+      <link href="{{ url_for('static', filename='assets/libs/slick-carousel/slick/slick.css') }}" rel="stylesheet" />
+      <link href="{{ url_for('static', filename='assets/libs/slick-carousel/slick/slick-theme.css') }}" rel="stylesheet" />
+      <!-- Favicon icon-->
+      <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/images/favicon/favicon.ico') }}" />
+
+      <!-- Libs CSS -->
+      <link href="{{ url_for('static', filename='assets/libs/bootstrap-icons/font/bootstrap-icons.min.css') }}" rel="stylesheet" />
+      <link href="{{ url_for('static', filename='assets/libs/feather-webfont/dist/feather-icons.css') }}" rel="stylesheet" />
+      <link href="{{ url_for('static', filename='assets/libs/simplebar/dist/simplebar.min.css') }}" rel="stylesheet" />
+
+      <!-- Theme CSS -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/theme.min.css') }}" />
+
+      <!-- jQuery CDN -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+      <!-- Custom CSS -->
+    <style>
+      .dropdown-menu {
+          min-width: 100%; /* Make the dropdown menu as wide as its parent */
+      }
+      .nav-item .nav-link {
+          white-space: nowrap; /* Prevent wrapping */
+      }
+  </style>
+   </head>
+
+   <body>
+      <!-- main -->
+      <div>
+         <!-- navbar -->
+         <nav class="navbar navbar-expand-lg navbar-glass">
+            <div class="container-fluid">
+               <div class="d-flex justify-content-between align-items-center w-100">
+                  <div class="d-flex align-items-center">
+                     <a class="text-inherit d-block d-xl-none me-4" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-text-indent-right" viewBox="0 0 16 16">
+                           <path
+                              d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm10.646 2.146a.5.5 0 0 1 .708.708L11.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zM2 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                        </svg>
+                     </a>
+                  </div>
+                  <div>
+                     <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0">
+                        <li class="dropdown ms-4">
+                           <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <img src="/static/assets/images/avatar/avatar-default.png" alt="" class="avatar avatar-md rounded-circle" />
+                           </a>
+
+                           <div class="dropdown-menu dropdown-menu-end p-0">
+                              <div class="lh-1 px-5 py-4 border-bottom">
+                                 <h5 class="mb-1 h6">AgriHire Admin</h5>
+                                 <small>{{ session.email }}</small>
+                              </div>
+
+                              <ul class="list-unstyled px-2 py-3">
+                                 <li>
+                                    <a class="dropdown-item" href="{{url_for('admin.dashboard')}}">Home</a>
+                                 </li>
+                                 <li>
+                                    <a class="dropdown-item" href="{{url_for('admin.admin_account_settings')}}">Profile</a>
+                                 </li>
+                              </ul>
+                              <div class="border-top px-5 py-3">
+                                 <a href="{{url_for('auth.logout')}}">Log Out</a>
+                              </div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </nav>
+
+         <div class="main-wrapper">
+            <!-- navbar vertical -->
+            <!-- navbar -->
+            <nav class="navbar-vertical-nav d-none d-xl-block">
+               <div class="navbar-vertical">
+                  <div class="px-4 py-5">
+                     <a href="{{url_for('main.home')}}" class="navbar-brand">
+                        <img src="{{ url_for('static', filename='assets/images/stores-logo/logo.png') }}" alt="eCommerce AgriHire Logo" style="width: 150px; height: auto;" />
+                     </a>
+                  </div>
+                  <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
+                     <ul class="navbar-nav flex-column" id="sideNavbar">
+                        <li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.dashboard' else '' }}" href="{{url_for('admin.dashboard')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-house"></i></span>
+                                 <span class="nav-link-text">Dashboard</span>
+                              </div>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.admin_account_settings' else '' }}" href="{{url_for('admin.admin_account_settings')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-person"></i></span>
+                                 <span class="nav-link-text">Profile</span>
+                              </div>
+                           </a>
+                        </li>
+                        <li class="nav-item mt-6 mb-3">
+                           <span class="nav-label">Store Management</span>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               <div class="d-flex align-items-center">
+                                  <span class="nav-link-icon"><i class="bi bi-list-ul"></i></span>
+                                  <span class="nav-link-text">Add Categories</span>
+                               </div>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item {{ 'active' if request.endpoint == 'admin.add_main_category' else '' }}" href="{{url_for('admin.add_main_category')}}">
+                                 <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="bi bi-folder"></i></span>
+                                    <span class="nav-link-text ms-2">Main - Category</span>
+                                 </div>
+                              </a></li>
+                              <li><a class="dropdown-item {{ 'active' if request.endpoint == 'admin.add_sub_category' else '' }}" href="{{url_for('admin.add_sub_category')}}">
+                                 <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><i class="bi bi-file-earmark"></i></span>
+                                    <span class="nav-link-text ms-2">Sub - Category</span>
+                                 </div>
+                              </a></li>
+                            </ul>
+                         </li>
+                         <li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.sub_categories' else '' }}" href="{{url_for('admin.sub_categories')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-eye"></i></span>
+                                 <span class="nav-link-text">View Sub Categories</span>
+                              </div>
+                           </a>
+                        </li> 
+                       {#<li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.equipments' else '' }}" href="{{url_for('admin.equipments')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-tools"></i></span>
+                                 <span class="nav-link-text">Equipments</span>
+                              </div>
+                           </a>
+                        </li> #}
+                        <li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.managers' else '' }}" href="{{url_for('admin.managers')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-people"></i></span>
+                                 <span class="nav-link-text">Managers</span>
+                              </div>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link {{ 'active' if request.endpoint == 'admin.stores' else '' }}" href="{{url_for('admin.stores')}}">
+                              <div class="d-flex align-items-center">
+                                 <span class="nav-link-icon"><i class="bi bi-buildings"></i></span>
+                                 <span class="nav-link-text">Stores</span>
+                              </div>
+                           </a >
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </nav>
+
+            <!-- main wrapper -->
+            <main class="main-content-wrapper">
+               <section class="container">
+                  <!-- Conditional rendering for the dashboard welcome banner -->
+                  {% if page_name == 'dashboard' %}
+                  <div class="row mb-8">
+                     <div class="col-md-12">
+                        <!-- card -->
+                        <div
+                           class="card bg-light border-0 rounded-4"
+                           style="background-image: url('{{ url_for('static', filename='assets/images/banner/dashboard.png') }}'); background-repeat: no-repeat; background-size: cover; background-position: right">
+                           <div class="card-body p-lg-12">
+                              <h1>Welcome back! AgriHire</h1>
+                              <p>AgriHire Solutions is a professional company for customer.</p>
+                              <a href="{{ url_for('main.add_product') }}" class="btn btn-primary">Create Product</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% endif %}
+               
+                  {% block dashboard_content %}
+                  <!-- Specific content for the dashboard goes here -->
+                  {% endblock %}
+               </section>
+            </main>
+         </div>
+      </div>
+
+      <!-- Javascript-->
+      <!-- Libs JS -->
+      <!-- <script src="{{ url_for('static', filename='assets/libs/jquery/dist/jquery.min.js') }}"></script> -->
+      <script src="{{ url_for('static', filename='assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
+
+      <!-- Theme JS -->
+      <script src="{{ url_for('static', filename='assets/js/theme.min.js') }}"></script>
+
+      <script src="{{ url_for('static', filename='assets/js/vendors/jquery.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/libs/slick-carousel/slick/slick.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/js/vendors/slick-slider.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/js/vendors/tns-slider.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/js/vendors/zoom.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/js/vendors/chart.js') }}"></script>
+   </body>
+
+   {% include 'flashmessage.html' %}
+</html>

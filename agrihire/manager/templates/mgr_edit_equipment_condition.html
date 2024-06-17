@@ -1,0 +1,49 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-6">
+       <div class="card h-100 card-lg">
+          <div class="card-body p-0">
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="py-6 p-md-6 p-lg-10">
+                   <div>
+                  
+                      <h5 class="mb-4">Edit Equipment Condition</h5>
+                      <div class="row">
+                         <div class="col-lg-5">
+                            
+                            <form method="POST" action="{{ url_for('manager.edit_equipment_condition', equipment_id=equipment_id) }}" enctype="multipart/form-data" disabled>
+                               {{ form.csrf_token }}
+                               
+                               <div class="mb-3">
+                                  <label class="form-label">{{ form.sub_category_name.label }}</label>
+                                  {{ form.sub_category_name(class="form-control", disabled="disabled") }}
+                               </div>
+                               
+                               <div class="mb-3">
+                                  <label class="form-label">{{ form.serial_number.label }}</label>
+                                  {{ form.serial_number(class="form-control", disabled="disabled") }}
+                               </div>
+                              
+                               <div class="mb-3">
+                                  <label class="form-label">{{ form.equipment_condition.label }}</label>
+                                  {{ form.equipment_condition(class="form-control") }}
+                               </div>
+
+                              <div class="mb-3">
+                                  <button class="btn btn-primary">Update Details</button>
+                               </div>
+                            </form>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'mgr_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<div class="container">
+    <div class="row mb-8">
+        <div class="col-md-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+                <div>
+                    <h2>Staffs</h2>
+                </div>
+                <div>
+                    <a href="{{ url_for('manager.add_new_staff') }}" class="btn btn-primary">Add New Staff</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 col-12 mb-5">
+            <div class="card h-100 card-lg">
+                <div class="p-6">
+                    <div class="row justify-content-between">
+                        <div class="col-md-4 col-12">
+                            <form class="d-flex" role="search" method = "GET" action = "{{ url_for('manager.search_staff') }}">
+                                <input class="form-control" type="search" placeholder="Search Staffs" aria-label="Search" name="search_query"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% if staffs %}
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>Store</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for staff in staffs %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-2">
+                                                <a href="{{ url_for('manager.edit_staff', user_id = staff['user_id']) }}" class="text-inherit">{{staff["staff_name"]}}</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{staff["email"]}}</td>
+                                    <td>{{staff["phone"]}}</td>
+                                    <td>{{staff["address"]}}</td>
+                                    <td>{{staff["store_name"]}}</td>
+                                    <td>{{staff["status"]}}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="feather-icon icon-more-vertical fs-5"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" onclick="confirmDelete({{staff['user_id']}});">
+                                                        <i class="bi bi-trash me-3"></i>
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ url_for('manager.edit_staff', user_id = staff['user_id']) }}">
+                                                        <i class="bi bi-pencil-square me-3"></i>
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+   
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <div> There is no staff in record.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(user_id) {
+        if (confirm("Are you sure you want to delete this staff member?")) {
+            window.location.href = "{{ url_for('manager.delete_staff', user_id=0) }}" .replace('0', user_id);
+        }
+    }
+</script>
+
+{% endblock %}

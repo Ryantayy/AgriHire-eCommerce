@@ -1,0 +1,7 @@
+{% for item in results %}
+<div class="dropdown-item">
+    <a href="{{ url_for('main.shop_single_item', sub_category_id=item.sub_category_id) }}">{{ item.name }}</a>
+</div>
+{% else %}
+<div class="dropdown-item">No results found.</div>
+{% endfor %}

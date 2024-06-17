@@ -1,0 +1,40 @@
+<!-- Toasts Container -->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11;">
+      <!-- Toasts will be added here dynamically -->
+    </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var messages = JSON.parse('{{ get_flashed_messages(with_categories=true) | tojson | safe }}');
+      var toastContainer = document.getElementById('toastContainer');
+    
+      messages.forEach(function(message) {
+        var category = message[0], content = message[1];
+        // Define background classes based on message category
+        var bgClass = category === 'success' ? 'bg-success text-white' : 
+                      category === 'danger' ? 'bg-danger text-white' : 
+                      category === 'warning' ? 'bg-warning' : 
+                      'bg-primary text-white'; // Default case
+    
+        var toastHtml = `
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+            <div class="toast-header">
+              <strong class="me-auto">Notification</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body ${bgClass}">
+              ${content}
+            </div>
+          </div>
+        `;
+    
+        toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+      });
+    
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+      var toastList = toastElList.map(function(toastEl) {
+        return new bootstrap.Toast(toastEl).show();
+      });
+    });
+    </script>    

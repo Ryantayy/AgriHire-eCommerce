@@ -1,0 +1,158 @@
+{% if session.role_id == 2 %}
+   {% extends 'staff_dashboard.html' %}
+{% elif session.role_id == 4 %}
+   {% extends 'admin_dashboard_layout.html' %}
+{% else %}
+   {% extends "mgr_dashboard_layout.html" %}
+{% endif %}
+
+{% block title %}Shop Items AgriHire{% endblock %}
+
+{% block dashboard_content %}
+<main>
+   <style>
+      .mb-3 {
+          margin-bottom: 1rem !important;
+      }
+      .mt-5 {
+          margin-top: 3rem !important;
+      }
+      h4.mb-3.h5 {
+          margin-bottom: 1rem;
+      }
+      textarea#editor {
+          display: block;
+          width: 100%;
+          height: auto;
+          padding: 0.5rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          color: #495057;
+          background-color: #fff;
+          background-clip: padding-box;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      }
+  </style>
+
+   <!-- container -->
+   <div class="container">
+      <!-- row -->
+      <div class="row mb-8">
+         <div class="col-md-12">
+            <div class="d-md-flex justify-content-between align-items-center">
+               <!-- page header -->
+               <div>
+                  <h2>Add New Equipment</h2>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- row -->
+      <form method="POST" action="{{ url_for('main.add_product') }}" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <div class="row">
+         <div class="col-lg-8 col-12">
+            <!-- card -->
+            <div class="card mb-6 card-lg">
+               <!-- card body -->
+               <div class="card-body p-6">
+                  <h4 class="mb-4 h5">Product Information</h4>
+                  <div class="row">
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.category.label }}
+                        {{ form.category(class="form-control") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.sub_category.label }}
+                        {{ form.sub_category(class="form-control") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.store.label }}
+                        {{ form.store(class="form-control") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.purchase_date.label }}
+                        {{ form.purchase_date(class="form-control") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.purchase_cost.label }}
+                        {{ form.purchase_cost(class="form-control",placeholder="Purchase Cost", required="") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.quantity.label }}
+                        {{ form.quantity(class="form-control",placeholder="Enter Quantity",required = "") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.equipment_condition.label }}
+                        {{ form.equipment_condition(class="form-control") }}
+                     </div>
+                     <!-- input -->
+                     <div class="mb-3 col-lg-6">
+                        {{ form.equipment_status.label }}
+                        {{ form.equipment_status(class="form-control") }}
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+             <!-- button -->
+             <div class="d-grid">
+               {{ form.submit(class="btn btn-primary") }}
+            </div>
+
+         </div>
+      </div>
+      </form>
+   </div>
+</main>
+
+<script src="{{ url_for('static', filename='assets/libs/quill/dist/quill.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/vendors/editor.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/libs/dropzone/dist/min/dropzone.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/vendors/dropzone.js') }}"></script>
+
+<script>
+   $(document).ready(function() {
+       var categorySelect = $('#category');
+       var subCategorySelect = $('#sub_category');
+       
+       function populateSubCategories(categoryId) {
+           $.ajax({
+               url: '{{ url_for('main.get_subcategories') }}',
+               type: 'GET',
+               data: { category_id: categoryId },
+               success: function(data) {
+                   subCategorySelect.empty();
+                   data.sub_categories.forEach(function(subCategory) {
+                       subCategorySelect.append(new Option(subCategory.sub_category_name, subCategory.sub_category_id));
+                   });
+               }
+           });
+       }
+
+       // Populate subcategories on page load
+       var initialCategoryId = categorySelect.val();
+       if (initialCategoryId) {
+           populateSubCategories(initialCategoryId);
+       }
+
+       // Update subcategories when category changes
+       categorySelect.change(function() {
+           var categoryId = $(this).val();
+           populateSubCategories(categoryId);
+       });
+   });
+</script>
+
+
+{% endblock %}
+

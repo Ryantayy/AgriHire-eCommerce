@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}AgriHire Solutions News{% endblock %}
+
+{% block content %}
+<main>
+    <section class="mt-8">
+        <div class="container">
+           <div class="row">
+              <!-- logo -->
+              <div class="col-12">
+                 <h1 class="fw-bold">AgriHire News</h1>
+              </div>
+           </div>
+        </div>
+     </section>
+    <!-- Main featured news item -->
+    <section class="mt-6 mb-lg-14 mb-8">
+        <div class="container">
+            <div class="row d-flex align-items-center mb-8">
+                <div class="col-12 col-md-12 col-lg-8">
+                    <div class="img-zoom">
+                    <img src="{{ url_for('static', filename='assets/images/news/' + main_news.image_url) }}" alt="Featured News" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-4">
+                    <div class="ps-lg-8 mt-8 mt-lg-0">
+                        <h2 class="mb-3">{{ main_news.title }}</h1>
+                        <p>{{ main_news.content }}</p>
+                        <p>Posted on: {{ main_news.posted_date.strftime('%d %b %Y') }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other news items -->
+    <section class="other-news">
+        <div class="container">
+            <div class="row">
+                {% for news in other_news %}
+                <div class="col-12 col-md-4">
+                    <div class="img-zoom">
+                        <img src="{{ url_for('static', filename='assets/images/news/' + news.image_url) }}" alt="News Image" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="mt-3">
+                    <h2>{{ news.title }}</h2>
+                    <p>{{ news.content }}</p>
+                    <p>Posted on: {{ news.posted_date.strftime('%d %b %Y') }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

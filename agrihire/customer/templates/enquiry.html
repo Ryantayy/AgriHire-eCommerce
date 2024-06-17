@@ -1,0 +1,112 @@
+{% extends 'dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+
+<!-- Side Nav -->
+<div class="col-lg-3 col-md-4 col-12 border-end d-none d-md-block">
+    <div class="pt-10 pe-lg-10">
+       
+       <ul class="nav flex-column nav-pills nav-pills-dark">
+          <li class="nav-item">
+             <a class="nav-link" href="{{ url_for('customer.account_orders') }}">
+                <i class="feather-icon icon-shopping-bag me-2"></i>
+                Your Orders
+             </a>
+          </li>
+          
+          <li class="nav-item">
+             <a class="nav-link" href="{{ url_for('customer.account_settings') }}">
+                <i class="feather-icon icon-settings me-2"></i>
+                Settings
+             </a>
+          </li>
+          
+          <li class="nav-item">
+             <a class="nav-link" href="{{ url_for('customer.account_payment_method') }}">
+                <i class="feather-icon icon-credit-card me-2"></i>
+                Payment Method
+             </a>
+          </li>
+          
+          <li class="nav-item">
+             <a class="nav-link active" href="account-payment-method.html">
+                <i class="feather-icon icon-help-circle me-2"></i>
+                Enquiry
+             </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('customer.notification') }}">
+               <i class="feather-icon icon-bell me-2"></i>
+               Notification
+            </a>
+         </li>
+          
+          <li class="nav-item">
+             <hr />
+          </li>
+          
+          <li class="nav-item">
+             <a class="nav-link" href="{{url_for('auth.logout')}}">
+                <i class="feather-icon icon-log-out me-2"></i>
+                Log out
+             </a>
+          </li>
+       </ul>
+    </div>
+ </div>
+
+ <div class="col-lg-9 col-md-8 col-12">
+    <div class="py-6 p-md-6 p-lg-10">
+        <div class="mb-6">
+           <h2 class="mb-0"> Inquiries </h2>
+        </div>
+        <div class="col-lg-5">
+          
+            <form method="POST" action="{{ url_for('customer.enquiry') }}" enctype="multipart/form-data">
+               {{ form.csrf_token }}
+             
+                <div class="mb-3">
+                    <label class="form-label">{{ form.customer.label }}</label>
+                    {{ form.customer(class="form-control", disabled="disabled") }}
+                </div>
+             
+               <div class="mb-3">
+                    <label class="form-label">{{ form.firstname.label }}</label>
+                    {{ form.firstname(class="form-control", disabled="disabled") }}
+                </div>
+           
+                <div class="mb-3">
+                    <label class="form-label">{{ form.lastname.label }}</label>
+                    {{ form.lastname(class="form-control", disabled="disabled")}}
+                </div>
+             
+               <div class="mb-3">
+                  <label class="form-label">{{ form.store.label }}</label>
+                    {{ form.store(class="form-control") }}
+               </div>
+               
+               <div class="mb-5">
+                  <label class="form-label">{{ form.subject.label }}</label>
+                  {{ form.subject(class="form-control") }}
+               </div>
+              
+               <div class="mb-5">
+                  <label class="form-label">{{ form.message_text.label }}</label>
+                  {{ form.message_text(class="form-control") }}
+               </div>
+            
+              
+               <div class="mb-3">
+                  <button class="btn btn-primary">Submit</button>
+               </div>
+            </form>
+         </div>
+     </div>
+
+ </div>
+
+
+
+{% endblock %}

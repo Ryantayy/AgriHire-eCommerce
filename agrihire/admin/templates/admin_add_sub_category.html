@@ -1,0 +1,128 @@
+{% extends 'admin_dashboard_layout.html' %}
+
+{% block dashboard_content %}
+
+<main>
+    <style>
+       .mb-3 {
+           margin-bottom: 1rem !important;
+       }
+       .mt-5 {
+           margin-top: 3rem !important;
+       }
+       h4.mb-3.h5 {
+           margin-bottom: 1rem;
+       }
+       textarea#editor {
+           display: block;
+           width: 100%;
+           height: auto;
+           padding: 0.5rem;
+           font-size: 1rem;
+           line-height: 1.5;
+           color: #495057;
+           background-color: #fff;
+           background-clip: padding-box;
+           border: 1px solid #ced4da;
+           border-radius: 0.25rem;
+           transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+       }
+   </style>
+ 
+    <!-- container -->
+    <div class="container">
+       <!-- row -->
+       <div class="row mb-8">
+          <div class="col-md-12">
+             <div class="d-md-flex justify-content-between align-items-center">
+                <!-- page header -->
+                <div>
+                   <h2>Add New Sub Category</h2>
+                </div>
+             </div>
+          </div>
+       </div>
+       <!-- row -->
+       <form method="POST" action="{{ url_for('admin.add_sub_category') }}" enctype="multipart/form-data">
+       {{ form.hidden_tag() }}
+       <div class="row">
+          <div class="col-lg-8 col-12">
+             <!-- card -->
+             <div class="card mb-6 card-lg">
+                <!-- card body -->
+                <div class="card-body p-6">
+                   <h4 class="mb-4 h5">Sub Category Information</h4>
+                   <div class="row">
+                      <!-- input -->
+                      <div class="mb-3 col-lg-6">
+                         {{ form.name.label }}
+                         {{ form.name(class="form-control",placeholder="Sub Category Name",required = "") }}
+                      </div>
+                      <!-- input -->
+                      <div class="mb-3 col-lg-6">
+                         {{ form.category.label }}
+                         {{ form.category(class="form-control") }}
+                      </div>
+                       <!-- input -->
+                       <div class="mb-3 col-lg-6">
+                         {{ form.hire_cost.label }}
+                         {{ form.hire_cost(class="form-control",placeholder="Hire Cost", required="") }}
+                      </div>
+                       <!-- input -->
+                       <div class="mb-3 col-lg-6">
+                         {{ form.weight.label }}
+                         {{ form.weight(class="form-control",placeholder="Weight", required="") }}
+                      </div>
+                      <!-- input -->
+                      <div class="mb-3 col-lg-6">
+                         {{ form.dimension.label }}
+                         {{ form.dimension(class="form-control",placeholder="Dimension", required="") }}
+                      </div>
+ 
+                      <div>
+                         <div class="mb-3 col-lg-12 mt-5">
+                            <!-- heading -->
+                            <h4 class="mb-3 h5">Product Images</h4>
+ 
+                            <!-- input -->
+                            {{ form.product_images(class="dropzone mt-4 border-dashed rounded-2 min-h-0") }}
+                         </div>
+                      </div>
+                      <!-- input -->
+                      <div class="mb-3 col-lg-12 mt-5">
+                         <h4 class="mb-3 h5">Product Descriptions</h4>
+                         {{ form.description(class="py-8",id="editor",placeholder="Product Description...", required="") }}
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="col-lg-4 col-12">
+             <!-- card -->
+             <div class="card mb-6 card-lg">
+                <!-- card body -->
+                <div class="card-body p-6">
+                   <h4 class="mb-4 h5">Product Price</h4>
+                   <!-- input -->
+                   <div class="mb-3">
+                      {{ form.shipping_price.label }}
+                      {{ form.shipping_price(type="text",class="form-control",placeholder="$0.00",required = "") }}                   
+                   </div>
+                </div>
+             </div>
+             <!-- button -->
+             <div class="d-grid">
+                {{ form.submit(class="btn btn-primary") }}
+             </div>
+          </div>
+       </div>
+       </form>
+    </div>
+ </main>
+ 
+ <script src="{{ url_for('static', filename='assets/libs/quill/dist/quill.min.js') }}"></script>
+ <script src="{{ url_for('static', filename='assets/js/vendors/editor.js') }}"></script>
+ <script src="{{ url_for('static', filename='assets/libs/dropzone/dist/min/dropzone.min.js') }}"></script>
+ <script src="{{ url_for('static', filename='assets/js/vendors/dropzone.js') }}"></script>
+
+{% endblock %}
